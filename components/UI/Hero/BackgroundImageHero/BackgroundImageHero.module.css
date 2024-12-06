@@ -1,0 +1,40 @@
+.heroSection {
+  position: relative;
+}
+
+.heroSection .container {
+  padding-bottom: 56.25%;
+}
+
+@media (max-width: 1000px) {
+  .heroSection {
+  }
+  .heroSection .container {
+  }
+}
+
+/* contact hero  */
+.contactHeroSection {
+  background: var(--light-surface-container-low);
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+.contactHeroSection .container {
+  align-items: center;
+  gap: 56px;
+  display: grid;
+  justify-content: center;
+  align-items: start;
+  grid-template-columns: 600px 1fr;
+}
+@media (max-width: 1200px) {
+  .contactHeroSection {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+  .contactHeroSection .container {
+    height: auto;
+    gap: 24px;
+    grid-template-columns: 1fr;
+  }
+}
