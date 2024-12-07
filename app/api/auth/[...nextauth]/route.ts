@@ -73,10 +73,10 @@ export const authOptions = {
 
           console.log("User registered or logged in successfully.");
           console.log("google login data", data);
-          jwtToken = data.token
+       
           return {
             id: "safdsafsd", // Access id from data.user
-            email: user.email,
+            email: data.email,
             token: data.token,
           };
         } catch (error) {
