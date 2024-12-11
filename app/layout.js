@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "yet-another-react-lightbox/styles.css";
 import { getServerSession } from 'next-auth';
-import { Work_Sans, Cormorant } from 'next/font/google'
+import { Work_Sans } from 'next/font/google'
 import AppProviders from '../components/AppProviders/AppProviders'
 
 import { GoogleTagManager } from '@next/third-parties/google'
@@ -19,18 +19,13 @@ const work_sans = Work_Sans({
   variable: '--font-work-sans',
   preload: true
 })
-const cormorant = Cormorant({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-cormorant',
-  preload: true
-})
+
 
 export default async function RootLayout({ children }) {
 
   const session = await getServerSession(); 
   return (
-    <html lang="en" className={`${work_sans.variable} ${cormorant.variable}`}>
+    <html lang="en" className={`${work_sans.variable} `}>
       {/* <GoogleTagManager gtmId="GTM-NMB3V6C" /> */}
       <body >
       <AppProviders session={session}>{children}</AppProviders>

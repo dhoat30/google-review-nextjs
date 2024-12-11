@@ -4,7 +4,7 @@ const requestUrl = process.env.API_BASE_URL
   ? `${process.env.API_BASE_URL}/register`
   : 'http://localhost:8080/register';
 
-export async function POST(req, res) {
+export async function POST(req: Request, res: Response) {
   try {
     // Parse the request body
     const { firstName, lastName, email, password, provider } = await req.json();

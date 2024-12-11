@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/UI/Auth/Register.tsx", "app/register/page.tsx", "app/api/create-google-review/route.js", "app/api/create-google-review/route.js"  ],
+, "components/UI/Auth/Register.tsx", "app/register/page.tsx", "app/api/create-google-review/route.js", "app/api/create-google-review/route.js", "app/dashboard/page.ts"  ],
   "exclude": [
     "node_modules"
   ]

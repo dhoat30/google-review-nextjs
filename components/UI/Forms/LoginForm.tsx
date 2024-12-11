@@ -78,21 +78,25 @@ const LoginForm: React.FC<LoginFormProps> = ({
       email: formData.email,
       password: formData.password,
     });
+
     console.log(result);
-    if (result.error) {
+    if (result) {
+      if(result.error) {
       console.error(result.error);
       setErrorText(result.error);
       setIsSuccess(false)
       setError(true);
       setIsLoading(false);
       return 
-    } else {
-      console.log("Login successful:", result);
-      setIsLoading(false);
-      setIsSuccess(true);
-      setError(false);
-      router.push("/create-post");
-    }
+      } 
+      else {
+        console.log("Login successful:", result);
+        setIsLoading(false);
+        setIsSuccess(true);
+        setError(false);
+        router.push("/dashboard");
+      }
+    } 
   } 
 
   return (
@@ -129,9 +133,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
         color="primary"
         fullWidth
         disabled={isLoading}
+        className="mt-8 "
       >
-        {isLoading ? "Submitting..." : "Register"}
+        {isLoading ? "..." : "Login"}
       </Button>
+      <Typography variant="subtitle1" align="center" className="mt-8 mb-8">
+        OR</Typography>
       <ProviderButtons/> 
     </Box>
   );

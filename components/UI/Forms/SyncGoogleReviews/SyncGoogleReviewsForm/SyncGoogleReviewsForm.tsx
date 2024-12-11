@@ -1,11 +1,17 @@
-"use client";
+
+'use client';
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { TextField, Button, Box, Typography, Alert } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Alert  from "@mui/material/Alert";
 import { useRouter } from "next/navigation";
-import googleReviewFormData from "../../../utils/googleReviewFormData";
+import syncGoogleReviewsData from "../../../../../utils/syncGoogleReviewsData";
 import axios from "axios";
-
+import { signIn } from "next-auth/react";
+import ProviderButtons from "../../../Auth/ProviderButtons/ProviderButtons";
+import styled from "@emotion/styled";
 // Define types for the form state and errors
 type FormState = {
   [key: string]: string;
@@ -16,14 +22,14 @@ type ErrorState = {
 };
 
 // Props for the component
-interface CreateGoogleReviewFormProps {
+interface SynchGoogleReviewProps {
   className?: string;
   formName?: string;
 }
 
-const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
+const SyncGoogleReviewsForm: React.FC<SynchGoogleReviewProps> = ({
   className = "",
-  formName = "Create Google Review Form",
+  formName = "Checkout Form",
 }) => {
   const router = useRouter();
   const [formData, setFormData] = useState<FormState>({});
@@ -32,7 +38,7 @@ const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-
+const[showInputField, setIsInputFieldShowing]=useState<boolean>(false)
   // Handle field value changes
   const handleChange = (id: string, value: string) => {
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -43,10 +49,7 @@ const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
   };
 
   // Handle field validation on blur
-  const handleBlur = (
-    id: string,
-    validationFunction?: (value: string) => boolean
-  ) => {
+  const handleBlur = (id: string, validationFunction?: (value: string) => boolean) => {
     if (validationFunction && !validationFunction(formData[id] || "")) {
       setErrors((prev) => ({ ...prev, [id]: true }));
     }
@@ -58,12 +61,9 @@ const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
     let isFormValid = true;
 
     // Validate all fields
-    googleReviewFormData.forEach((field) => {
+    syncGoogleReviewsData.forEach((field) => {
       const value = formData[field.id] || "";
-      if (
-        field.required &&
-        (!value || (field.validation && !field.validation(value)))
-      ) {
+      if (field.required && (!value || (field.validation && !field.validation(value)))) {
         newErrors[field.id] = true;
         isFormValid = false;
       }
@@ -77,48 +77,41 @@ const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
     setIsLoading(true);
 
     // use auth sign function to sign in
-    const data = {
-      firstName: formData.firstname,
-      lastName: formData.lastname,
-    };
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    });
 
-    axios.post("/api/create-google-review", data)
-      .then((response) => {
-        console.log(response);
-        if(!response.data.success){ 
-          setErrorText(response.message);
-          setIsSuccess(false);
-          setError(true);
-          setIsLoading(false);
-          return 
-        } 
-        console.log("data successful:", response);
-          setIsLoading(false);
-          setIsSuccess(true);
-          setError(false);
-      })
-      .catch((error) => {
-        console.log(error.response.statusText );
-        setErrorText(error.response.statusText);
-        setIsSuccess(false);
-        setError(true);
+    console.log(result);
+    if (result) {
+      if(result.error) {
+      console.error(result.error);
+      setErrorText(result.error);
+      setIsSuccess(false)
+      setError(true);
+      setIsLoading(false);
+      return 
+      } 
+      else {
+        console.log("Login successful:", result);
         setIsLoading(false);
-      });
-
-   
-  };
+        setIsSuccess(true);
+        setError(false);
+        router.push("/dashboard");
+      }
+    } 
+  } 
 
   return (
-    <Box
+    <BoxStyle
       sx={{ maxWidth: 400, mx: "auto" }}
       component="form"
       onSubmit={submitHandler}
-      className={className}
+      className={`${className}` }
     >
-      <Typography variant="h5" component="h1" align="center">
-        Create Google Review
-      </Typography>
-      {googleReviewFormData.map((field) => (
+
+      {syncGoogleReviewsData.map((field) => (
         <TextField
           key={field.id}
           label={field.label}
@@ -135,22 +128,25 @@ const CreateGoogleReviewForm: React.FC<CreateGoogleReviewFormProps> = ({
           helperText={errors[field.id] ? field.errorMessage : ""}
         />
       ))}
-      {error && (
-        <Alert severity="error" className="mt-8 mb-8">
-          {errorText}
-        </Alert>
-      )}
+      {error && <Alert severity="error" className="mt-8 mb-8">{errorText}</Alert>}
       <Button
         type="submit"
         variant="contained"
         color="primary"
         fullWidth
         disabled={isLoading}
+        className="mt-8 "
       >
-        {isLoading ? "Submitting..." : "Register"}
+        {isLoading ? "..." : "Sync google reviews"}
       </Button>
-    </Box>
+     
+    </BoxStyle>
   );
 };
 
-export default CreateGoogleReviewForm;
+export default SyncGoogleReviewsForm;
+
+const  BoxStyle = styled(Box)`
+
+
+`

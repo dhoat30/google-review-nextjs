@@ -126,15 +126,14 @@ ul {
   }
 }
 .max-width-xl {
-  max-width: 1536px;
+
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
-@media (max-width: 600px) {
+@media (max-width: 1366px) {
   .max-width-xl {
-    max-width: 100%;
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -340,3 +339,18 @@ strong {
     display: none;
   }
 }
+
+
+/* dashboard global css  */
+.dashboard-container{ 
+  display: grid; 
+  grid-template-columns: 350px 1fr;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.dashboard-main{ 
+  min-height: 100vh;
+  background: var(--light-surface-container-lowest);
+  border-radius: 80px 0px 0px 80px;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 33px 32px;}

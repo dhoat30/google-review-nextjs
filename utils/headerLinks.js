@@ -2,8 +2,8 @@ export const headerLinks = [
 
     {
         id: 2,
-        label: "HOME",
-        url: "/"
+        label: "Dashboard",
+        url: "/dashboard"
     },
    
     {
@@ -18,8 +18,6 @@ export const headerLinks = [
         url: "/login",
 
     },
-
-
 
 ]
 

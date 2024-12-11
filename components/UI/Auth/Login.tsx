@@ -15,7 +15,7 @@ export default function Register() {
       <Container maxWidth="sm" className="container">
         <Paper className="wrapper" variant="outlined">
           <div className="form-wrapper">
-           <LoginForm className="register-form" /> 
+           <LoginForm className="login-form" /> 
           </div>
         </Paper>
       </Container>

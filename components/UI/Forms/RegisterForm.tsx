@@ -96,9 +96,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           email: data.email,
           password: data.password,
         });
-
+        if(signInResult){ 
         if (signInResult.error) {
-          setError(signInResult.error);
+          setError(true);
           console.error(signInResult);
           setErrorText(signInResult.error);
           setIsSuccess(false)
@@ -113,6 +113,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
           router.push("/create-post");
         }
+      }
       } else {
         setError(true);
         setErrorText(response.data.message);

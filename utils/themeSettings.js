@@ -6,13 +6,13 @@ export const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#0D47A1',
+            main: '#9E79FF',
         },
         secondary: {
-            main: '#00897B',
+            main: '#9D89B0',
         },
         tertiary: {
-            main: '#FFC107',
+            main: '#9E79FF',
         },
         contrastThreshold: 4.5,
     },
@@ -26,7 +26,7 @@ export const theme = createTheme({
             fontSize: '5rem',
             fontWeight: 500,
             color: "var(--dark-on-surface)",
-            fontFamily: 'var(--font-cormorant)',
+        
             '@media (max-width:900px)': {
                 fontSize: '3rem',
             },
@@ -34,7 +34,7 @@ export const theme = createTheme({
         h2: {
             fontWeight: 500,
             color: "var(--dark-on-surface)",
-            fontFamily: 'var(--font-cormorant)',
+        
             '@media (max-width:600px)': {
                 fontSize: '2.5rem',
             },
@@ -43,13 +43,13 @@ export const theme = createTheme({
             fontWeight: 600,
             letterSpacing: "0.05rem",
             color: "var(--dark-on-surface)",
-            fontFamily: 'var(--font-cormorant)',
+        
 
         },
         h4: {
             fontWeight: 500,
             color: "var(--dark-on-surface)",
-            fontFamily: 'var(--font-cormorant)',
+        
 
             '@media (max-width:900px)': {
                 fontSize: '1.5rem',
@@ -58,7 +58,7 @@ export const theme = createTheme({
         h5: {
             fontWeight: 400,
             letterSpacing: "0.02rem",
-            fontFamily: 'var(--font-cormorant)',
+        
 
             color: "var(--dark-on-surface)",
 
@@ -68,7 +68,7 @@ export const theme = createTheme({
             fontWeight: 400,
             letterSpacing: "0.02rem",
             color: "var(--dark-on-surface)",
-            fontFamily: 'var(--font-cormorant)',
+        
         },
         body1: {
             color: "var( --dark-on-surface-variant)",
@@ -89,11 +89,12 @@ export const theme = createTheme({
 
             styleOverrides: {
                 root: {
-                    borderRadius: "0",
-                    paddingRight: "32px",
-                    paddingLeft: "32px",
+              
+               
                 },
                 contained: {
+                    paddingRight: "32px",
+                    paddingLeft: "32px",
                     color: "var(--dark-on-primary)",
                     background: "var(--dark-primary)",
                     transition: "all 0.3s ease-in-out",
@@ -107,6 +108,8 @@ export const theme = createTheme({
                     },
                 },
                 outlined: {
+                    paddingRight: "32px",
+                    paddingLeft: "32px",
                     border: "2px solid var(--dark-primary)",
                     color: "var(--dark-primary)",
                     transition: "all 0.3s ease-in-out",
@@ -127,15 +130,15 @@ export const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#0D47A1',
+            main: '#9E79FF',
         },
         secondary: {
-            main: '#00897B',
+            main: '#9D89B0',
         },
         tertiary: {
-            main: '#FFC107',
+            main: '#9E79FF',
         },
-        contrastThreshold: 4.5,
+        contrastThreshold:4,
     },
     typography: {
         fontFamily: [
@@ -208,11 +211,11 @@ export const lightTheme = createTheme({
 
             styleOverrides: {
                 root: {
-                    borderRadius: "50px",
-                    color: "var(--light-on-primary)",
-                    paddingRight: "32px",
-                    paddingLeft: "32px",
+                   
                 },
+                contained:{ 
+                    borderRadius: "50px", 
+                }, 
                 outlined: {
                     border: "1px solid var(--light-primary)",
                     color: "var(--light-primary)",
