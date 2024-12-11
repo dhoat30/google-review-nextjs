@@ -109,6 +109,8 @@ const[showInputField, setIsInputFieldShowing]=useState<boolean>(false)
       component="form"
       onSubmit={submitHandler}
       className={`${className}` }
+      encType="multipart/form-data" // Add this line
+
     >
 
       {syncGoogleReviewsData.map((field) => (
