@@ -1,9 +1,11 @@
-import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
+import { getServerSession } from 'next-auth';
 import { authOptions } from "../../../../lib/auth";
-import { NextResponse } from "next/server";
-import axios from "axios";
-import formidable from "formidable";
 
+const requestUrl = process.env.API_BASE_URL
+  ? `${process.env.API_BASE_URL}/business/add-business`
+  : "http://localhost:8080/business/add-business";
 
 export const config = {
   api: {
@@ -11,23 +13,7 @@ export const config = {
   },
 };
 
-const requestUrl = process.env.API_BASE_URL
-  ? `${process.env.API_BASE_URL}/business/add-business`
-  : "http://localhost:8080/business/add-business";
-
-// Helper function to parse multipart form-data (using formidable)
-
-const parseForm = async (req: Request): Promise<{ fields: any; files: any }> => {
-  const form = formidable({ multiples: false }); // Configure formidable
-  return new Promise((resolve, reject) => {
-    form.parse(req as any, (err, fields, files) => {
-      if (err) reject(err);
-      resolve({ fields, files });
-    });
-  });
-};
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     // Get session
     const session = await getServerSession(authOptions);
@@ -37,62 +23,48 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
-
-    // Parse form data
-    const { fields, files } = await parseForm(req);
-    const businessMapUrl = fields.businessMapUrl;
-    const businessName = fields.businessName;
-    const image = files.image; // Uploaded file
-
-    if (!businessMapUrl || !businessName || !image) {
-      return NextResponse.json(
-        { message: "Missing required fields", success: false },
-        { status: 400 }
-      );
-    }
-
-      console.log("Parsed form data:", { businessMapUrl, businessName, image });
-
-    // Prepare FormData for the external API
-    const apiFormData = new FormData();
-    apiFormData.append("businessMapUrl", businessMapUrl);
-    apiFormData.append("businessName", businessName);
-    apiFormData.append("image", image.filepath, image.originalFilename); // Include file path and name
-
-    // Send the POST request to the Node.js API
-    const response = await fetch(requestUrl, {
-      method: "POST",
+// 1. Parse the incoming form data
+const formData = await req.formData(); 
+   // 2. Create a new FormData object for axios
+   const axiosFormData = new FormData();
+   axiosFormData.append('businessName', formData.get('businessName') as string);
+   axiosFormData.append('businessMapUrl', formData.get('businessMapUrl') as string);
+   axiosFormData.append('image', formData.get('image') as File);
+    // Forward the request to the target backend
+    const { data } = await axios.post(requestUrl, axiosFormData, {
       headers: {
-        Authorization: `Bearer ${session.user.token}`,
+        'Content-Type': req.headers.get('content-type') || 'multipart/form-data', 
+        "Authorization": `Bearer ${session.user.token}`,
       },
-      body: apiFormData,
     });
 
-    const data = await response.json();
+    // 1. Get the response buffer
+    // const buffer = await new Response(data).arrayBuffer();
+  // 2. Create a new Response with the buffer
+ 
+  return NextResponse.json(data, { status: 201 });
 
-    // Handle different response statuses
-    if (response.status === 201) {
-      return NextResponse.json({
-        message: "Business added successfully",
-        success: true,
-        data,
-      });
-    }
-
-    return NextResponse.json(
-      {
-        message: data.message || "An error occurred",
-        success: false,
-        data,
-      },
-      { status: response.status }
-    );
   } catch (error) {
-    console.error("Error in POST /api/business/add-business:", error);
-    return NextResponse.json(
-      { message: "Internal server error", success: false },
-      { status: 500 }
-    );
+    console.error(error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        return NextResponse.json({ 
+          message: `Error: ${error.response.status} ${error.response.data.message}`, 
+          success: false 
+        }, { status: error.response.status }); // Use backend status code
+      } else if (error.request) {
+        // The request was made but no response was received
+        return NextResponse.json({ message: 'No response from backend server.', success: false }, { status: 502 });
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        return NextResponse.json({ message: 'Error setting up request to backend.', success: false }, { status: 500 });
+      }
+    } else {
+      // Handle other types of errors
+      return NextResponse.json({ message: 'An error occurred.', success: false }, { status: 500 });
+    }
   }
 }
 

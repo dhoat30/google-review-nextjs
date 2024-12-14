@@ -13,7 +13,7 @@ interface Props {
 export default function DashboardHeading({title, className}: Props) {
   return (
    <Section className={className}>
-<Container maxWidth="xl"> 
+            <Container maxWidth="xl"> 
     <div className="wrapper">
         <Typography variant="h2" component="h1">{title}</Typography>
         <AddBusinessForm/> 

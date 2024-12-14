@@ -8,7 +8,7 @@ import "yet-another-react-lightbox/styles.css";
 import { getServerSession } from 'next-auth';
 import { Work_Sans } from 'next/font/google'
 import AppProviders from '../components/AppProviders/AppProviders'
-
+import {Provider} from 'react-redux'
 import { GoogleTagManager } from '@next/third-parties/google'
 
 // fonts settings

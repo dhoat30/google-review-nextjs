@@ -1,6 +1,6 @@
 const { siteUrl } = require('./next-sitemap.config');
-const cmsDomain = process.env.NODE_ENV === 'production' ? 'cms.greatspice.co.nz' : "cms.greatspice.co.nz";
-const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'https';
+const cmsDomain = process.env.NODE_ENV === 'production' ? 'localhost' : "localhost";
+const protocol = process.env.NODE_ENV === 'production' ? 'http' : 'http';
 // bundle analyzer 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
@@ -15,9 +15,9 @@ const nextConfig = {
     },
     images: {
         remotePatterns: [{
-            protocol: protocol,
-            hostname: cmsDomain,
-            port: '',
+            protocol: "http",
+            hostname: "localhost",
+            port: '8080',
             pathname: '/**'
         }],
     },

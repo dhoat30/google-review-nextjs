@@ -1,42 +1,55 @@
 
+// business apis ------------------------------------------------------------------------------------------------------------------------------------
+export const getBusinessData = async (sessionToken) => {
 
-// new way of doing it 
-//get single post with slug 
-export const getSinglePostData = async (slug, apiRoute) => {
-    let response = await fetch(`${process.env.url}/${apiRoute}?slug=${slug}&acf_format=standard`, {
-        next: { revalidate: 60 },
+  try {
+    const response = await fetch(`${process.env.API_BASE_URL}/business/get-business`, {
+        cache: 'no-store', // Force fresh fetch
+        method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sessionToken}`,
+      },
     });
-    let data = await response.json();
-    return data
-}
+    // Check if the response is successful
+    if (!response.ok) {
+      console.error(`Failed to fetch business data: ${response.statusText}`);
+      return null; // Handle error gracefully
+    }
 
-// get single post data using post id 
-export const getSinglePostDataWithID = async (id, apiRoute) => {
-    let response = await fetch(`${process.env.url}/${apiRoute}/${id}?acf_format=standard`, {
-        next: { revalidate: 60 },
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching business data:', error);
+    return null; // Return null or handle error appropriately
+  }
+};
+
+
+// google reviews apis ------------------------------------------------------------------------------------------------------------------------------------
+export const getBusinessGoogleReviews = async (sessionToken, businessID) => {
+  try {
+    const response = await fetch(`${process.env.API_BASE_URL}/reviews/fetch-google-reviews`,  {
+        cache: 'no-store', // Force fresh fetch
+        method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sessionToken}`,
+      },
     });
-    let data = await response.json();
-    return data
+    // Check if the response is successful
+    if (!response.ok) {
+      console.error(`Failed to fetch google reviews: ${response.statusText}`);
+      return null; // Handle error gracefully
+    }
+
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching google reviews:', error);
+    return null; // Return null or handle error appropriately
+  }
 }
-
-//get all posts 
-export const getAllPosts = async (apiRoute) => {
-    let response = await fetch(`${process.env.url}/${apiRoute}?acf_format=standard&per_page=100`, {
-        next: { revalidate: 60 },
-    });
-    let data = await response.json();
-    return data
-}
-
-
-export const getOptions = async () => {
-    let fetchData = await fetch(`${process.env.url}/wp-json/options/all`, {
-        next: { revalidate: 60 },
-    });
-    let data = await fetchData.json();
-    return data
-}
-
 //get projects 
 // export const getProjects = async () => {
 //     let fetchData = await fetch(`${process.env.url}/wp-json/wp/v2/work?acf_format=standard&per_page=100`, {

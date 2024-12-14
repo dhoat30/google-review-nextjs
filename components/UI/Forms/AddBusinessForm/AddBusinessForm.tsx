@@ -40,11 +40,21 @@ function SimpleDialog({
   const [errorText, setErrorText] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null); // State for image preview
 
   const handleClose = () => {
     onClose(selectedValue);
+    setIsSuccess(false);
+    setIsLoading(false);
+    setErrorText("");
+    setImagePreview(null);
   };
-
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file)); // Generate preview URL
+    }
+  };
   const handleFormSubmission = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
@@ -55,6 +65,8 @@ function SimpleDialog({
     const businessName = formJson.businessName;
     const image = formJson.image;
     setIsLoading(true);
+    setErrorText("");
+
     try {
       const result = await axios.post(
         "/api/business/add-business",
@@ -69,18 +81,21 @@ function SimpleDialog({
           },
         }
       );
+      const resultData = await result.data;
+      console.log("results", resultData);
 
-      console.log(result);
-      if (result.data.success) {
-        setIsSuccess(true);
-        setIsLoading(false);
-        handleClose();
+      if (result.status === 201) {
+        // fetch google revies
+          setIsSuccess(true);
+          setIsLoading(false);
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
       } else {
         setIsSuccess(false);
         setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
       setIsSuccess(false);
       setIsLoading(false);
       if (axios.isAxiosError(error)) {
@@ -143,13 +158,22 @@ function SimpleDialog({
             Upload Logo
             <VisuallyHiddenInput
               type="file"
-              onChange={(event) => console.log(event.target.files)}
-              multiple
+              onChange={handleImageChange} // Call handleImageChange on file select
+
               name="image"
               id="image"
               required
             />
           </Button>
+              {/* Display the uploaded image preview */}
+              {imagePreview && (
+            <div className="image-wrapper mt-16">
+              <img
+                src={imagePreview}
+                alt="Uploaded Logo"
+              />
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="text">
@@ -197,6 +221,18 @@ export default function AddBusinessForm() {
 
 const DialogStyled = styled(Dialog)`
   .wrapper {
+    .image-wrapper{ 
+      display: block;
+      width: auto;
+      width: 150px; 
+    background: var(--light-surface-container-low);
+      border: 1px solid var(--light-outline-variant);
+      img{ 
+        display: block;
+        width: 150px; 
+        padding: 16px; 
+      }
+    }
   }
 `;
 const Div = styled.div`

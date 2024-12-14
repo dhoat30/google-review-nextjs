@@ -38,6 +38,8 @@ declare module "next-auth" {
     };
   }
 }
+
+
 // Define the auth options
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -52,6 +54,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req): Promise<User | null> {
+
         if (!credentials) {
           return null;
         }
@@ -65,6 +68,7 @@ export const authOptions: NextAuthOptions = {
               provider: "credentials",
             }),
           });
+          console.log("authOptions", credentials);
 
           const data = await response.json();
           console.log("resposne is here", response);

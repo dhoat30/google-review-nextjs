@@ -22,11 +22,13 @@ export async function POST(req: Request, res: Response) {
       
     }
 
-    const { mapURL } = await req.json();
+    const { mapURL, businessID } = await req.json();
     const formData = JSON.stringify({
-      mapURL: mapURL
+      mapURL: mapURL,
+      businessID: businessID
     });
 
+    
     const response = await fetch(requestUrl, {
       method: "POST",
       headers: {

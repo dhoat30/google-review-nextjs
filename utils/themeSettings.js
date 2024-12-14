@@ -6,13 +6,13 @@ export const theme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#9E79FF',
+            main: 'rgb(61 95 144)',
         },
         secondary: {
-            main: '#9D89B0',
+            main: 'rgb(85 95 113)',
         },
         tertiary: {
-            main: '#9E79FF',
+            main: 'rgb(1 103 125)',
         },
         contrastThreshold: 4.5,
     },
@@ -85,43 +85,7 @@ export const theme = createTheme({
 
     },
     components: {
-        MuiButton: {
-
-            styleOverrides: {
-                root: {
-              
-               
-                },
-                contained: {
-                    paddingRight: "32px",
-                    paddingLeft: "32px",
-                    color: "var(--dark-on-primary)",
-                    background: "var(--dark-primary)",
-                    transition: "all 0.3s ease-in-out",
-                    border: "1px solid var(--dark-primary)",
-                    '&:hover': {
-                        border: "1px solid rgba(230,230,230,1)",
-
-                        color: "var(--dark-on-primary)",
-                        background: "rgba(230,230,230,1)",
-
-                    },
-                },
-                outlined: {
-                    paddingRight: "32px",
-                    paddingLeft: "32px",
-                    border: "2px solid var(--dark-primary)",
-                    color: "var(--dark-primary)",
-                    transition: "all 0.3s ease-in-out",
-
-                    '&:hover': {
-                        border: "2px solid var(--dark-primary)",
-                        backgroundColor: 'var(--dark-primary)',
-                        color: 'var(--dark-on-primary)',
-                    },
-                },
-            }
-        }
+       
     }
 });
 
@@ -130,15 +94,15 @@ export const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#9E79FF',
+            main: 'rgb(61 95 144)',
         },
         secondary: {
-            main: '#9D89B0',
+            main: 'rgb(85 95 113)',
         },
         tertiary: {
-            main: '#9E79FF',
+            main: 'rgb(1 103 125)',
         },
-        contrastThreshold:4,
+        contrastThreshold:4.5,
     },
     typography: {
         fontFamily: [
@@ -192,6 +156,7 @@ export const lightTheme = createTheme({
 
         h6: {
             color: "var(--light-on-surface)",
+            lineHeight: "1.4rem",
         },
         body1: {
 
@@ -215,6 +180,8 @@ export const lightTheme = createTheme({
                 },
                 contained:{ 
                     borderRadius: "50px", 
+                  background: "var(--black)",
+                  color: "var(--white)",
                 }, 
                 outlined: {
                     border: "1px solid var(--light-primary)",
